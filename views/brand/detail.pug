@@ -6,6 +6,17 @@ extends ../layout.pug
 block title
 	| #{brandName}
 
+block scripts 
+	script(type="text/javascript").
+		function conf (brandName) {
+			if (confirm("Are you Sure??????????????????")) {
+				console.log(1231231231);
+				location.href = `/brands/delete/${brandName}`;
+			} else {
+				return false;
+			}
+		}
+
 block contents 
 	.container 
 		nav.navbar
@@ -14,7 +25,7 @@ block contents
 			if isStaff
 				.text-end.me-4
 					a.me-5.fs-5(href=`/brands/edit/${brandName}`) Edit
-					a.me-5.fs-5(href=`/brands/delete/${brandName}`) Delete
+					a.me-5.fs-5(type="button" onclick=`conf('${brandName}')`) Delete
 
 		.mt-4
 			.row.col-lg-12 

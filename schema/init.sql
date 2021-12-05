@@ -29,7 +29,7 @@ CREATE TABLE categories (
 CREATE TABLE products (
 	id SERIAL PRIMARY KEY,
 	user_id INT NOT NULL REFERENCES users (id),
-	category_id INT NOT NULL REFERENCES categories (id),
+	category_id INT NOT NULL REFERENCES categories (id) ON DELETE CASCADE,
 	product_name VARCHAR(20) NOT NULL UNIQUE,
 	price INT NOT NULL
 );
@@ -50,8 +50,8 @@ CREATE TABLE brand_product (
 
 CREATE TABLE reviews (
 	id SERIAL NOT NULL PRIMARY KEY,
-	user_id INT NOT NULL REFERENCES users(id),
-	product_id INT NOT NULL REFERENCES products(id),
+	user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+	product_id INT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
 	comment TEXT NOT NULL,
 	star SMALLINT NOT NULL DEFAULT 0
 );

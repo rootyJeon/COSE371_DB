@@ -36,10 +36,12 @@ block contents
 	.container 
 		.ms-4
 			p.fs-3#product-name #{obj.name}
-
-			p.fs-5#category Category: #{obj.category}
+			if isStaff
+				.float-end.me-4.fs-5#editbtn
+					a.btn.btn-secondary(href=`/products/edit/${obj.name}`) Edit
+			.fs-5#category Category: #{obj.category}
 			span.fs-5#brands Brand: 
-			
+
 			for brand in obj.brands
 				span.fs-5.ms-1 #{brand.brand_name} | 
 			p.fs-5 Price: #{obj.price}

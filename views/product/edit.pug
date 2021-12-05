@@ -1,0 +1,29 @@
+//- Parameters
+//- user, category, brands
+
+extends ../layout.pug
+
+block title 
+	| Edit Product 
+
+block contents 
+	.container 
+		form(method="post")
+			.mb-4
+				label.fs-3.form-label Product Name
+				input.form-control#product_name(name="name" placeholder="Product Name")
+
+			.mb-4 
+				span.fs-3 Category:
+				span.ms-4.fs-5 #{category.c_name}
+			
+			.mb-4
+				span.fs-3.form-label Brand:
+					for brand in brands
+						span.ms-4.fs-5 #{brand.brand_name} |
+
+			.mb-4
+				label.fs-3.form-label Price 
+				input.form-control#product_price(name="price" placeholder="price")
+			
+			button.btn.btn-primary#submit(type="submit") Submit

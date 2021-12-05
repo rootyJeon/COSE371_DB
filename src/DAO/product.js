@@ -75,6 +75,13 @@ const LinkBrandProduct = async (brandName, productName) => {
 	await runQuery(sql, values)
 }
 
+const EditProduct = async (og_name, p_name, price) => {
+	const sql = "UPDATE products SET product_name = $1, price = $2 WHERE product_name = $3;"
+	const values = [p_name, price, og_name]
+
+	await runQuery(sql, values)
+}
+
 module.exports = {
 	GetAllProducts,
 	GetBrandList,
@@ -84,4 +91,5 @@ module.exports = {
 	GetAverageStar,
 	InsertProduct,
 	LinkBrandProduct,
+	EditProduct,
 }

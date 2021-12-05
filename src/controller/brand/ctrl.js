@@ -70,7 +70,6 @@ const BrandEditForm = async (req, res, next) => {
 		const categoryList = await brandDAO.GetCategoryList()
 		const categories = await brandDAO.GetCategories(brandName);
 		
-		console.log(categories);
 		res.render('./brand/post.pug', { user, brandName, categories, categoryList })
 	} catch(e){
 		next(e)
@@ -93,6 +92,7 @@ const BrandEdit = async (req, res, next) => {
 const BrandDelete = async (req, res, next) => {
 	try {
 		const brandName = req.params.brandName
+		await brandDAO.DeleteProducts(brandName)
 		await brandDAO.DeleteBrand(brandName)
 
 		res.redirect('/brands')

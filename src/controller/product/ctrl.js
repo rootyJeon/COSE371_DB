@@ -9,6 +9,7 @@ const ProductDetailForm = async (req, res, next) => {
 		const detail = await productDAO.GetDetailProduct(productName)
 		const comments = await productDAO.GetCommentsByName(productName)
 		const avgStar = await productDAO.GetAverageStar(productName)
+		const isStaff = user !== undefined && user.displayname === detail.displayname
 
 		const obj = {
 			name: productName,
@@ -20,7 +21,7 @@ const ProductDetailForm = async (req, res, next) => {
 			comments:comments,
 		}
 
-		res.render('./product/detail.pug', { user, obj })
+		res.render('./product/detail.pug', { user, obj, isStaff })
 	} catch(e){
 		next(e)
 	}
@@ -64,14 +65,16 @@ const addBrand = async (req, res, next) => {
 		const brands = await productDAO.GetBrandList();
 
 		let json = {}
-		let html = "<select class='mt-4 form-select' title='brand' name='brand'>\n	<option value='' selected>Brand</option>\n"
+		let html = ""
+		html += "<select class='mt-4 form-select brands' title='brand' name='brand'>\n"
+		html += "	<option value='' selected>Brand</option>\n"
 
 		for(let i = 0; i < brands.length; ++i){
 			let name = brands[i].brand_name
 			html += `	<option value='${name}'> ${name}</option>\n`
 		}
 
-		html += "</select>"
+		html += "</select>\n"
 
 		json.html = html
 
@@ -86,11 +89,36 @@ const addComments = async (req, res, next) => {
 		const { user } = req.session;
 		const { name, comment, rating } = req.body;
 
-		console.log(name, comment, rating);
 		await reviewDAO.addComment(user.displayname, name, comment, parseInt(rating));
 
 		res.redirect(`/products/product/${name}`)
 	} catch(e){
+		next(e);
+	}
+}
+
+const ProductEditForm = async (req, res, next) => {
+	try {
+		const user = req.session.user
+		const p_name = req.params.p_name
+
+		const category = await productDAO.GetDetailProduct(p_name)
+		const brands = await productDAO.GetBrandsByName(p_name)
+		
+		res.render('./product/edit.pug', { user, category, brands })
+	} catch (e) {
+		next(e);
+	}
+}
+
+const ProductEdit = async (req, res, next) => {
+	try {
+		const p_name = req.params.p_name;
+		const { name, price } = req.body;
+
+		await productDAO.EditProduct(p_name, name, price)
+		res.redirect(`/products/product/${name}`)
+	} catch (e) {
 		next(e);
 	}
 }
@@ -101,4 +129,6 @@ module.exports = {
 	ProductPost,
 	addBrand,
 	addComments,
+	ProductEditForm,
+	ProductEdit,
 }

@@ -9,6 +9,56 @@ block title
 block scripts 
 	script(type="text/javascript").
 		$(document).ready(function(){
+			function chk(p_name, category, brands, price) {
+				console.log(p_name, category, brands, price)
+				if(!p_name || !category || !price) {
+					return false;
+				}
+
+				for(let i = 0; i < brands.length; ++i){
+					if(brands[i] === '') return false;
+					for(let j = i + 1; j < brands.length; ++j){
+						if(brands[i] === brands[j]) return false;
+					}
+				}
+
+				if(isNaN(price) || price.includes('.') || parseInt(price) < 0) return false;
+
+				return true;
+			}
+
+			$("#submit").on("click", function(){
+				let p_name = $("#product_name").val().trim();
+				let category = $("#category").val().trim();
+				let brands = $(".brands");
+				let price = $("#price").val().trim();
+				let brand = []
+				
+				for(let i = 0; i < brands.length; ++i){
+					brand.push(brands[i].value);
+				}
+			
+
+				if(chk(p_name, category, brand, price)){
+					$.ajax({
+					url: "/products/post",
+					type: "POST",
+					data: {
+						name: p_name,
+						category: category,
+						brand: brand,
+						price: price,
+					}
+				}).done(function(){
+					console.log("success");
+				}).fail(function (xhr, status, errThrown){
+					location.href=`/products/product/${p_name}`;
+				})
+				} else{
+					alert("alert");
+				}
+			});
+
 			$("#addBrand").on("click", function(){
 				$.ajax({
 					url: "/products/addBrand",
@@ -25,29 +75,28 @@ block scripts
 
 block contents 
 	.container 
-		form(method="post")
-			.mb-2
-				label.form-label Product Name
-				input.form-control#product_name(name="name" placeholder="Product Name")
+		.mb-2
+			label.form-label Product Name
+			input.form-control#product_name(name="name" placeholder="Product Name")
 
-			.mb-2
-				label.form-label Categories 
-				select.form-select#category(title="category" name="category")
-					option(value="" selected) Categories
-					each category in categoryList
-						option(value=`${category.category_name}`) #{category.category_name}
+		.mb-2
+			label.form-label Categories 
+			select.form-select#category(title="category" name="category")
+				option(value="" selected) Categories
+				each category in categoryList
+					option(value=`${category.category_name}`) #{category.category_name}
 
-			.mb-2 
-				label.form-label Brand
-				#brands
-					select.brands.form-select(title="brand" name="brand")
-						option(value="" selected) Brand
-						each brand in brandList
-							option(value=`${brand.brand_name}`) #{brand.brand_name}
+		.mb-2 
+			label.form-label Brand
+			#brands
+				select.brands.form-select(title="brand" name="brand")
+					option(value="" selected) Brand
+					each brand in brandList
+						option(value=`${brand.brand_name}`) #{brand.brand_name}
 
-			.mb-4
-				label.form-label Price 
-				input.form-control#product_price(name="price" placeholder="price")
-			
-			button.btn.btn-primary#submit(type="submit") Submit
+		.mb-4
+			label.form-label Price 
+			input.form-control#price(name="price" placeholder="price")
+		
+		button.btn.btn-primary#submit Submit
 		button.float-end.btn.btn-secondary#addBrand Add Brand

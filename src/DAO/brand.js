@@ -86,6 +86,18 @@ const DeleteBrand = async (brandName) => {
 	await runQuery(sql, values)
 }
 
+const DeleteProducts = async (brandName) => {
+	const subQuery1 = "SELECT id FROM brands WHERE brand_name = $1";
+	const subQuery2 = `SELECT product_id FROM brand_product WHERE brand_id = (${subQuery1})`;
+
+	const sql = 
+	`DELETE FROM products \
+	 WHERE id = (${subQuery2})`
+	const values = [brandName]
+	await runQuery(sql, values)
+
+}
+
 module.exports = {
 	GetBrandList,
 	GetCategoryList,
@@ -97,4 +109,5 @@ module.exports = {
 	PostBrandCategory,
 	UpdateBrand,
 	DeleteBrand,
+	DeleteProducts,
 }
