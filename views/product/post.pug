@@ -1,0 +1,53 @@
+//- Parameters
+//- users, brandList, categoryList
+
+extends ../layout.pug
+
+block title 
+	| Post Product 
+
+block scripts 
+	script(type="text/javascript").
+		$(document).ready(function(){
+			$("#addBrand").on("click", function(){
+				$.ajax({
+					url: "/products/addBrand",
+					type: "POST",
+					dataType: "JSON",
+				}).done(function(json){
+					$("#brands").append(json.html)
+				}).fail(function (xhr, status, errThrown){
+					alert("Ajax failed")
+				})
+			});
+		})
+
+
+block contents 
+	.container 
+		form(method="post")
+			.mb-2
+				label.form-label Product Name
+				input.form-control#product_name(name="name" placeholder="Product Name")
+
+			.mb-2
+				label.form-label Categories 
+				select.form-select#category(title="category" name="category")
+					option(value="" selected) Categories
+					each category in categoryList
+						option(value=`${category.category_name}`) #{category.category_name}
+
+			.mb-2 
+				label.form-label Brand
+				#brands
+					select.brands.form-select(title="brand" name="brand")
+						option(value="" selected) Brand
+						each brand in brandList
+							option(value=`${brand.brand_name}`) #{brand.brand_name}
+
+			.mb-4
+				label.form-label Price 
+				input.form-control#product_price(name="price" placeholder="price")
+			
+			button.btn.btn-primary#submit(type="submit") Submit
+		button.float-end.btn.btn-secondary#addBrand Add Brand

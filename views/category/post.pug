@@ -1,0 +1,26 @@
+//- Parameters
+//- user, categoryName?
+
+extends ../layout.pug
+
+block title 
+	| Post Category 
+
+block contents 
+	.container 
+		form.col-lg-6.ms-4(method="post")
+			.mb-4
+				if categoryName
+					h4.mb-2 Category Name
+					input.mb-2.form-control#category_name(name="name" value=`${category.name}`)
+					
+					h4.mb-2 Category Info
+					input.mb-2.form-control#category_info(name="info" value=`${category.info}`)
+				else 
+					h4.mb-2 Category Name
+					input.mb-2.form-control#category_name(name="name")
+
+					h4.mb-2 Category Info
+					input.mb-2.form-control#category_info(name="info")
+
+			button.btn.btn-primary(type="submit") Submit

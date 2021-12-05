@@ -1,0 +1,33 @@
+extends ../layout.pug
+
+block title 
+	| Sign in 
+
+block contents
+	.container
+		.col-lg-6.mt-4.ms-4
+			.page-header 
+				h3 Sign Up
+
+			form(method="post")
+				.input-group.mb-2 
+					.input-group-prepend
+						span.input-group-text#userName-addon ID 
+					input.form-control#userName(name="userName", type="text")
+
+				.input-group.mb-2
+					.input-group-prepend 
+						span.input-group-text#password-addon Password 
+					input.form-control#password(name="password", type="password")
+
+				.input-group.mb-2
+					.input-group-prepend 
+						span.input-group-text#password-check-addon Check Password 
+					input.form-control#password-check(name="password-check", type="password")
+
+				.input-group.mb-2 
+					.input-group-prepend 
+						span.input-group-text#displayName-addon DisplayName 
+					input.form-control#displayName(name="displayName", type="text")
+
+				button.btn.btn-primary(type="submit") Sign In

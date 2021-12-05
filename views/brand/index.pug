@@ -1,0 +1,23 @@
+//- Parameter
+//- user, brand
+
+extends ../layout.pug
+
+block title
+	| Brand 
+
+block contents
+	.container
+		nav.navbar
+			p.fs-3.mt-4.ms-4 Brand
+			if user 
+				ul.navbar-nav.ms-auto.me-4
+					li.nav-item 
+						a.nav-link.fs-5(href="/brands/post") Make Brand
+		
+		table.table.table-striped.mt-2
+			each brand, idx in brand_list 
+				if idx % 4 === 0
+					tr 
+				td.text-center
+					a.fs-5(href=`/brands/brand/${brand.brand_name}`) #{brand.brand_name}

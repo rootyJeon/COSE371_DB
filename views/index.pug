@@ -1,0 +1,29 @@
+//- Parameters
+//- user, objs, total
+//- objs -> obj -> (displayName, category, product, price)
+
+extends layout.pug 
+
+block title
+	| Home
+
+block contents 
+	.container
+		.mt-4 
+			.row.col-lg-12
+				.col.border.col-lg-6
+					p.ms-5 상품명
+				.col.border.text-center.col-lg-2 카테고리
+				.col.border.text-center.col-lg-2 게시자
+				.col.border.text-center.col-lg-2 가격
+		.mt-2
+			for obj in objs
+				.row.col-lg-12
+					.col.border.col-lg-6
+						a.ms-5(href=`/products/product/${obj.product_name}`) #{obj.product_name}
+					.col.border.text-center.col-lg-2 #{obj.category_name}
+					.col.border.text-center.col-lg-2 #{obj.displayname}
+					.col.border.text-center.col-lg-2 #{obj.price}
+		.mt-2 
+			.text-end 
+				p.me-5 총 게시물 수: #{total}

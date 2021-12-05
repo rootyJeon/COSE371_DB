@@ -1,0 +1,33 @@
+//- Parameters
+//- user, brandName, objs, isStaff
+
+extends ../layout.pug
+
+block title
+	| #{brandName}
+
+block contents 
+	.container 
+		nav.navbar
+			h3.ms-4 #{brandName}
+
+			if isStaff
+				.text-end.me-4
+					a.me-5.fs-5(href=`/brands/edit/${brandName}`) Edit
+					a.me-5.fs-5(href=`/brands/delete/${brandName}`) Delete
+
+		.mt-4
+			.row.col-lg-12 
+				.col.col-lg-6 
+					p.ms-5 상품명
+				.col.col-lg-2 
+					p 카테고리
+				.col.col-lg-2 
+					p 게시자
+
+			for obj in objs
+				.row.col-lg-12
+					.col.col-lg-6
+						a.ms-5(href=`/products/product/${obj.p_name}`) #{obj.p_name}
+					.col.col-lg-2 #{obj.c_name}
+					.col.col-lg-2 #{obj.displayname}

@@ -1,0 +1,25 @@
+//- Parameters
+//- user, category_list
+
+extends ../layout.pug
+
+block title 
+	| categories
+
+block contents 
+	.container
+		nav.navbar
+			h3.ms-4.mt-4 Category
+
+			if user
+				.text-end.me-4
+					a.fs-5.text-decoration-none(href="/categories/post") Make Category
+
+		.categories 
+
+		table.table.table-striped.mt-5
+			each category, idx in category_list 
+				if idx % 4 === 0
+					tr 
+				td.text-center
+					a.fs-5(href=`/categories/category/${category.category_name}`) #{category.category_name}

@@ -1,0 +1,67 @@
+//- Parameter
+//- user, obj(name, brand, category, price, star, commnets)
+
+extends ../layout.pug
+
+block title 
+	| detail 
+
+block scripts 
+	script(type="text/javascript").
+		function chkButton(chk) {
+			let button = $("#addCommentBtn");
+
+			if(chk) button.prop('disabled', false);
+
+			else button.prop('disabled', true);
+		}
+
+		function onChange() {
+			let comment = $("#comment").val();
+			let rating = $("#rating").val();
+			let chk = true;
+
+			console.log(comment);
+			console.log(rating);
+
+			if(comment.trim() === "" || rating == "" || isNaN(rating) || rating.includes('.')) chk = false;
+			rating = parseInt(rating);
+
+			if(rating < 1 || rating > 5) chk = false;
+
+			chkButton(chk);
+		}
+
+block contents 
+	.container 
+		.ms-4
+			p.fs-3#product-name #{obj.name}
+
+			p.fs-5#category Category: #{obj.category}
+			span.fs-5#brands Brand: 
+			
+			for brand in obj.brands
+				span.fs-5.ms-1 #{brand.brand_name} | 
+			p.fs-5 Price: #{obj.price}
+			p.fs-5 Star: #{obj.star}/5
+
+			.comments#comments
+				for comment in obj.comments
+					.card.mt-4 
+						.card-header author: #{comment.displayname}
+						ul.list-group.list-group-flush
+							li.list-group-item rating: #{comment.star}점
+							li.list-group-item Comments: #{comment.comment}
+
+			if user
+				form.mt-4.mb-4(action="/products/addComments" method="post") 
+					input(type="hidden" name="name" value=`${obj.name}`)
+					p.fs-4 Comment
+					textarea.mb-2#comment(name="comment" rows="2" onchange="onChange()" placeholder="  Comment" style="width:100%;")
+
+					span.fs-4.me-4 rating
+					input.me-2#rating(type="text" name="rating" onchange="onChange()" style="width:40px;")
+					span.fs-4.mb-2 /5 
+					span.fs-5 (1 ~ 5 사이의 정수)
+
+					button.float-end.btn.btn-secondary#addCommentBtn(disabled="true") Add

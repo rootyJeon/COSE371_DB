@@ -1,0 +1,54 @@
+//- Parameters
+//- user, brandName?, categories?, categoryList
+
+extends ../layout.pug
+
+block title 
+	| Post Brand 
+
+block scripts
+	script(type="text/javascript").
+		$(document).ready(function(){
+			$("#addCategory").on("click", function(){
+				$.ajax({
+					url: "/brands/addCategory",
+					type: "POST",
+					dataType: "JSON",
+				}).done(function(json){
+					$("#Categories").append(json.html)
+				}).fail(function (xhr, status, errThrown){
+					alert("Ajax failed")
+				})
+			});
+		})
+
+block contents 
+	.container 
+		form.col-lg-6.ms-4(method="post")
+			.mb-4
+				label.fs-4.form-label Brand Name
+				if brandName
+					input.form-control#brand_name(name="name" value=`${brandName}`)
+				else 
+					input.form-control#brand_name(name="name")
+
+			#Categories.mb-4 
+				label.fs-4.form-label Category
+				if categories 
+					each og_category in categories 
+						select.form-select.mt-4(name="category")
+							each category in categoryList 
+								if og_category.c_name === category.c_name 
+									option(value=`${category.c_name}` selected) #{category.c_name}
+								else 
+									option(value=`${category.c_name}`) #{category.c_name}
+
+				else 
+					select.form-select(name="category")
+						each category in categoryList 
+							option(value=`${category.c_name}`) #{category.c_name}
+						 
+			button.btn.btn-primary(type="submit") Make Brand
+
+		.text-end
+			button.btn.btn-secondary#addCategory Add Category

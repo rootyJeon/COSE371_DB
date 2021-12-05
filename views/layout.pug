@@ -1,0 +1,45 @@
+doctype html 
+html(lang="ko")
+	head
+		title
+			block title 
+			
+		meta(charset="utf-8")  
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+		link(rel='stylesheet', href='/styles/bootstrap.min.css')
+		script(src='/scripts/bootstrap.min.js', defer)
+		script(src='/scripts/jquery-3.5.1.min.js')
+
+
+	body
+		nav.navbar.navbar-expand-lg.mt-4.ms-4
+			.container
+				a.fs-2.navbar-brand(href="/") KUSINSA
+				button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNav" title="btn")
+					span.navbar-toggler-icon
+
+				.navbar-collapse#navbarNav
+					ul.navbar-nav.ms-auto.me-4.fs-5
+						li.nav-itmm 
+							a.nav-link(href="/categories") Category
+						li.nav-item 
+							a.nav-link(href="/brands") Brand
+						if user == undefined
+							li.nav-item 
+								a.nav-link(href="/auth/sign-in") Sign In 
+							li.nav-item 
+								a.nav-link(href="/auth/sign-up") Sign Up
+
+						else 
+							li.nav-item 
+								a.nav-link(href="/products/post") Post 
+							li.nav-item 
+								a.nav-link(href="/auth/sign-out") Sign out
+
+		block contents
+
+		.container
+			footer.text-center.mt-4
+				p Copyright By ByungWoo And Seongjin
+
+		block scripts
