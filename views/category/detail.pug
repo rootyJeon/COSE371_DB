@@ -4,12 +4,12 @@
 extends ../layout.pug
 
 block title
-	| #{categoryName}
+	| #{c_name}
 
 block contents 
 	.container 
 		nav.navbar
-			h3.ms-4 #{categoryName}
+			h3.ms-4 #{c_name}
 
 			if isStaff
 				.text-end.me-4
