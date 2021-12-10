@@ -1,4 +1,4 @@
-const { brandDAO, categoryDAO, productDAO, reviewDAO } = require('../../DAO')
+const { brandDAO, categoryDAO, productDAO } = require('../../DAO')
 
 const ProductDetailForm = async (req, res, next) => {
 	try {
@@ -89,7 +89,7 @@ const addComments = async (req, res, next) => {
 		const { user } = req.session;
 		const { name, comment, rating } = req.body;
 
-		await reviewDAO.addComment(user.displayname, name, comment, parseInt(rating));
+		await productDAO.addComment(user.displayname, name, comment, parseInt(rating));
 
 		res.redirect(`/products/product/${name}`)
 	} catch(e){
