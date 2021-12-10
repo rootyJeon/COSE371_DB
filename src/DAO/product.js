@@ -29,6 +29,10 @@ const GetBrandsByName = async (productName) => {
 }
 
 // 상품의 이름을 받아 해당 상품에 달린 댓글의 내용, 별점, 댓글을 남긴 사람의 닉네임을 가져오는 함수.
+// sql 작동 원리:
+// 1. 유저의 식별 번호와 댓글을 작성한 유저의 식별 번호가 같아야 하며,
+// 2. 받아온 상품의 이름을 통해 얻어진 상품의 식별 번호와 달린 댓글의 식별 번호가 같아야 함.
+// 3. 댓글의 식별 번호는 댓글이 남겨진 순서대로 증가하기 때문에, 식별 번호가 곧 댓글이 남겨지 순서이다. 이를 통해 ORDER BY를 이용해 시간 순서대로 가져온다.
 const GetCommentsByName = async (productName) => {
 	const sql = "SELECT u.displayName displayname, r.comment comment, r.star star \
 				 FROM users u JOIN reviews r ON u.id = r.user_id \
@@ -53,6 +57,7 @@ const GetDetailProduct = async (productName) => {
 }
 
 // 상품의 별점들을 총합하여 평균을 가져오는 함수.
+// AVG라는 aggregate 함수를 통해 해당 상품에 달린 댓글의 별점의 평균을 가져옴.
 const GetAverageStar = async (productName) => {
 	const sql = 
 	"SELECT AVG(star) \
@@ -98,7 +103,6 @@ const addComment = async (u_d_name, p_name, comment, rating) => {
 	const sql = 
 	`INSERT INTO reviews (user_id, product_id, comment, star) \
 	VALUES (${u_id_subQuery}, ${p_id_subQuery}, $3, $4);`
-	console.log(p_name);
 	const values = [u_d_name, p_name, comment, rating]
 
 	await runQuery(sql, values);
